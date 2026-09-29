@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Global Event Feed - Trane</title>
+    <!-- Vinculación con el archivo CSS externo -->
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+<div class="app-container">
+
+    <!-- HEADER PRINCIPAL -->
+    <header class="app-header">
+        <div class="brand-logo">
+            <!-- Logotipo de la compañía Trane -->
+            <img src="logos/trane.svg" alt="Trane Logo" class="logo-img">
+        </div>
+    </header>
+
+    <!-- CARRUSEL VERTICAL CON EFECTO SNAP (ESTILO INSTAGRAM) -->
+    <main class="feed-scroll">
+        <!-- El contenido se cargará dinámicamente desde Firebase Firestore usando JavaScript -->
+        <!-- Mientras conecta, app.js inyectará un mensaje amigable o pantalla de carga -->
+    </main>
+
+    <!-- BARRA INFERIOR DE ACCESO RÁPIDO (STATIONARY) -->
+    <nav class="bottom-nav">
+        <!-- Icono Home -->
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#262626" stroke-width="2"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path></svg>
+        
+        <!-- BOTÓN CENTRAL PARA DISPARAR LA CÁMARA NATIVA -->
+        <button class="nav-trigger" id="btn-camara">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"></path><circle cx="12" cy="13" r="4"></circle></svg>
+        </button>
+
+        <!-- Icono Perfil / Ajustes Estático -->
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#666" stroke-width="2"><circle cx="12" cy="7" r="4"></circle><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path></svg>
+    </nav>
+
+    <!-- ========================================== -->
+    <!-- VENTANA MODAL 1: PUBLICAR NUEVA FOTO        -->
+    <!-- ========================================== -->
+    <div id="modal-publicar" class="modal-overlay">
+        <div class="modal-content">
+            <h3 class="modal-title">Nueva Publicación</h3>
+            
+            <!-- Vista previa de la foto capturada por el usuario -->
+            <div class="preview-container">
+                <img id="img-preview" src="" alt="Vista previa de la captura">
+            </div>
+            
+            <!-- Entrada de texto para el pie de página -->
+            <div class="form-group">
+                <textarea id="txt-caption" placeholder="Escribe un pie de página para este evento..." maxlength="200"></textarea>
+                <div class="char-counter"><span id="char-count">0</span>/200</div>
+            </div>
+            
+            <!-- Botones de control -->
+            <div class="modal-actions">
+                <button id="btn-cancelar" class="btn-secondary">Cancelar</button>
+                <button id="btn-subir" class="btn-primary">Publicar</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- ========================================== -->
+    <!-- VENTANA MODAL 2: COMENTARIOS EN TIEMPO REAL -->
+    <!-- ========================================== -->
+    <div id="modal-comentarios" class="modal-overlay">
+        <div class="modal-content comments-modal">
+            <h3 class="modal-title">Comentarios</h3>
+            
+            <!-- Contenedor con scroll interno para listar las opiniones de Firebase -->
+            <div id="lista-comentarios" class="comments-list-container">
+                <!-- Se inyecta dinámicamente con JavaScript -->
+            </div>
+            
+            <!-- Caja inferior para escribir y enviar un nuevo comentario -->
+            <div class="comment-input-group">
+                <input type="text" id="input-nuevo-comentario" placeholder="Añade un comentario anónimo..." maxlength="150">
+                <button id="btn-enviar-comentario">Publicar</button>
+            </div>
+            
+            <!-- Botón para ocultar la hoja de comentarios -->
+            <button id="btn-cerrar-comentarios" class="btn-secondary" style="margin-top: 10px; padding: 12px; border-radius: 16px;">Cerrar</button>
+        </div>
+    </div>
+     <!-- ========================================== -->
+    <!-- VENTANA DE IMAGEN EN PANTALLA COMPLETA     -->
+    <!-- ========================================== -->
+    <div id="lightbox-foto" class="lightbox-overlay">
+        <button id="btn-cerrar-lightbox" class="lightbox-close-btn">&times;</button>
+        <div class="lightbox-content-wrapper">
+            <img id="img-lightbox-src" src="" alt="Visualización ampliada">
+            <!-- AQUÍ SE MOSTRARÁ EL PIE DE PÁGINA EN LA PANTALLA COMPLETA -->
+            <p id="txt-lightbox-caption" class="lightbox-caption-text"></p>
+        </div>
+    </div>
+
+</div>
+
+    <!-- Vinculación del script como Módulo ES6 para soporte nativo de Firebase -->
+    <script type="module" src="app.js"></script>
+</body>
+</html>
