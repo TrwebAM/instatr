@@ -20,20 +20,40 @@ body {
 }
 
 /* Contenedor tipo "Mockup de Celular" (Mobile-First) */
+/* Contenedor Adaptable Inteligente - Corregido de raíz para celulares */
 .app-container {
-    max-width: 480px;
-    width: 100%;
+    width: 100%;                  /* En celulares ocupará el 100% real de la pantalla de borde a borde */
+    max-width: 100%;              /* Rompe el candado de los 480px en dispositivos móviles */
     height: 100vh;
-    height: 100dvh; 
+    height: 100dvh;               /* Evita que Edge o Safari corten el footer con la cámara */
     
-    /* REGLA OBLIGATORIA: Actúa como un imán para que los elementos absolutos se queden ADENTRO del móvil */
-    position: relative; 
+    position: relative;           /* Mantiene el imán obligatorio para los elementos absolutos */
     
-    background: #fff;
+    background: #ffffff;
     display: flex;
     flex-direction: column;
-    box-shadow: 0 0 30px rgba(0,0,0,0.08);
+    overflow: hidden;
 }
+
+/* REGLA MÁGICA: Solo si la pantalla es una computadora de escritorio (más grande que un celular)
+   volverá a encuadrarse de forma elegante en el centro como un mockup de 480px */
+@media (min-width: 481px) {
+    .app-container {
+        max-width: 480px;
+        margin: 0 auto;           /* Centra el teléfono virtual en monitores grandes */
+        height: 95vh;             /* Le da una altura estética en escritorio */
+        border-radius: 30px;      /* Bordes redondeados de simulación para PC */
+        box-shadow: 0 10px 40px rgba(0,0,0,0.12);
+        top: 50%;
+        transform: translateY(-50%); /* Centrado geométrico vertical en monitores */
+    }
+    
+    /* Ajuste para que el Home también se quede dentro del molde en PC */
+    .home-overlay {
+        border-radius: 30px !important;
+    }
+}
+
 
 /* ==========================================================================
    2. HEADER SUPERIOR (MARCA CORPORATIVA)
@@ -109,7 +129,7 @@ body {
     position: relative; /* Cambia de absolute a relative para permitir que el tamaño dependa de la imagen */
     width: 100%;
     max-height: 100%;  /* Evita que una foto vertical gigante se salga de la pantalla */
-    border-radius: 40px; 
+    border-radius: 10px; 
     background-color: #000; 
     z-index: 1;
     overflow: hidden;
