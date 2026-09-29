@@ -9,7 +9,38 @@
 </head>
 <body>
 
+
+   
+
 <div class="app-container">
+ <!-- PANTALLA DE BIENVENIDA (HOME INICIAL) -->
+      
+    <!-- PANTALLA DE BIENVENIDA (HOME CON BADGE SUPERIOR) -->
+    <div id="home-bienvenida" class="home-overlay">
+        
+        <!-- 1. NUEVO: BADGE SVG EN LA ESQUINA SUPERIOR DERECHA -->
+        <div class="home-badge-container">
+            <!-- REEMPLAZA ESTE SVG DE EJEMPLO POR TU CÓDIGO SVG REAL O TU ARCHIVO -->
+            <img src="30.svg" alt="Event Badge" class="trane-badge-img">
+        </div>
+        
+        <!-- CAJA CENTRAL: Textos y logotipo -->
+        <div class="home-content">
+            <div class="brand-text-wrapper">
+                <h1 class="trane-main-title">BIENVENIDOS</h1>
+                <h2 class="trane-secondary-title">TRANE COLOMBIA</h2>
+                <p class="trane-legacy-text">30 YEARS OF LEGACY & BEYOND</p>
+                <img src="logos/trane.svg" alt="Trane Logo" class="home-logo">
+            </div>
+        </div>
+        
+        <!-- BOTÓN DE ENTRAR EN EL FOOTER -->
+        <button id="btn-entrar-app" class="btn-home-start">Entrar</button>
+
+    </div>
+
+
+
 
     <!-- HEADER PRINCIPAL -->
     <header class="app-header">
@@ -25,19 +56,47 @@
         <!-- Mientras conecta, app.js inyectará un mensaje amigable o pantalla de carga -->
     </main>
 
-    <!-- BARRA INFERIOR DE ACCESO RÁPIDO (STATIONARY) -->
+       <!-- BARRA INFERIOR DE ACCESO RÁPIDO COMPLETA (4 BOTONES) -->
     <nav class="bottom-nav">
-        <!-- Icono Home -->
-        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#262626" stroke-width="2"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path></svg>
+        <!-- 1. BOTÓN HOME: Icono de Casita -->
+        <svg id="nav-home" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#262626" stroke-width="2" style="cursor: pointer;"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path></svg>
         
-        <!-- BOTÓN CENTRAL PARA DISPARAR LA CÁMARA NATIVA -->
+        <!-- 2. BOTÓN CÁMARA: Disparador central negro -->
         <button class="nav-trigger" id="btn-camara">
             <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"></path><circle cx="12" cy="13" r="4"></circle></svg>
         </button>
 
-        <!-- Icono Perfil / Ajustes Estático -->
-        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#666" stroke-width="2"><circle cx="12" cy="7" r="4"></circle><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path></svg>
+        <!-- 3. BOTÓN SCROLL: Flecha para subir directo al último post más reciente -->
+                <!-- 3. BOTÓN SCROLL CORREGIDO: Icono universal de "Volver arriba" con barra y flecha -->
+        <svg id="nav-scroll-top" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#262626" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="cursor: pointer;">
+            <path d="M18 3H6M12 21V9M5 16l7-7 7 7"/>
+        </svg>
+
+        <!-- 4. BOTÓN COMPARTIR: Icono de Código QR -->
+<img src="qr.svg" id="nav-share-qr" alt="Compartir QR" style="cursor: pointer;" width="24" height="24">
     </nav>
+
+
+    <!-- ========================================== -->
+    <!-- VENTANA MODAL 3: COMPARTIR CÓDIGO QR       -->
+    <!-- ========================================== -->
+    <div id="modal-compartir-qr" class="modal-overlay">
+        <div class="modal-content qr-share-modal">
+            <h3 class="modal-title">Compartir</h3>
+            <p style="text-align: center; font-size: 13px; color: #666; margin-bottom: 20px;">Deja que otros escaneen tu pantalla para unirse a Momentos Trane.</p>
+            
+            <!-- Aquí el JavaScript inyectará el código QR generado en vivo -->
+                        <!-- Cargamos directamente el archivo SVG desde tu carpeta de logos -->
+                        <!-- Contenedor optimizado para la inyección nativa del vector SVG -->
+            <div id="canvas-qr-compartir" class="qr-code-holder"></div>
+
+
+            
+            <button id="btn-cerrar-share-qr" class="btn-secondary" style="margin-top: 25px; padding: 12px; border-radius: 16px; width: 100%;">Cerrar</button>
+        </div>
+    </div>
+
+    <!-- MODAL COMENTARIOS Y LIGHTBOX SE MANTIENEN IGUAL ABAJO... -->
 
     <!-- ========================================== -->
     <!-- VENTANA MODAL 1: PUBLICAR NUEVA FOTO        -->
