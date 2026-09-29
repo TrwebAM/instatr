@@ -23,14 +23,17 @@ body {
 .app-container {
     max-width: 480px;
     width: 100%;
-    height: 100vh;
+    
+    /* REGLA DINÁMICA: Ajusta el alto real restando las barras móviles de Edge/Safari */
+    height: 100vh; 
+    height: 100dvh; 
+    
     position: relative;
     background: #fff;
     display: flex;
     flex-direction: column;
     box-shadow: 0 0 30px rgba(0,0,0,0.08);
 }
-
 /* ==========================================================================
    2. HEADER SUPERIOR (MARCA CORPORATIVA)
    ========================================================================== */
@@ -78,9 +81,13 @@ body {
 /* Tarjeta de Publicación - Ajustada para fluir de forma continua */
 .post-card {
     width: 100%;
-    height: auto;                 /* ELIMINADO EL FIJO: Ahora el alto se adapta libremente a cada foto */
-    scroll-snap-align: center;    /* Hace que al soltar el dedo, el post tienda a centrarse en pantalla */
-    padding: 25px 15px;           /* Separación vertical uniforme entre publicaciones */
+    
+    /* Reajustado dinámicamente para que no empuje el menú inferior en Edge */
+    height: auto; 
+    max-height: calc(100dvh - 60px); 
+    
+    scroll-snap-align: center;    
+    padding: 25px 15px;           
     display: flex;
     flex-direction: column;
     justify-content: center; 
