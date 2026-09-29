@@ -23,17 +23,18 @@ body {
 .app-container {
     max-width: 480px;
     width: 100%;
-    
-    /* REGLA DINÁMICA: Ajusta el alto real restando las barras móviles de Edge/Safari */
-    height: 100vh; 
+    height: 100vh;
     height: 100dvh; 
     
-    position: relative;
+    /* REGLA OBLIGATORIA: Actúa como un imán para que los elementos absolutos se queden ADENTRO del móvil */
+    position: relative; 
+    
     background: #fff;
     display: flex;
     flex-direction: column;
     box-shadow: 0 0 30px rgba(0,0,0,0.08);
 }
+
 /* ==========================================================================
    2. HEADER SUPERIOR (MARCA CORPORATIVA)
    ========================================================================== */
@@ -42,11 +43,13 @@ body {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    background: #fff;
+    background: #e44d26;          /* Cambiado al rojo/naranja oficial de Trane */
     z-index: 10;
     height: 60px;
-    border-bottom: 1px solid #f0f2f5;
+    border-bottom: 1px solid #c33a17; /* Línea divisoria sutil en tono rojo oscuro */
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
 }
+
 
 .brand-logo {
     height: 100%;
@@ -55,11 +58,15 @@ body {
 }
 
 /* Ajuste específico para el logo SVG de Trane */
+/* EL LOGOTIPO - TAMAÑO AMPLIADO Y AJUSTADO */
 .logo-img {
-    height: 100%;       
-    width: auto;        
-    max-height: 32px;   
+    height: auto;             /* Deja que la altura se calcule sola para no aplastar el logo */
+    width: 90px;             /* Subido el ancho para que se vea mucho más grande y legible */
+    max-height: 38px;         /* Límite de altura más amplio para que encaje perfecto en el header de 60px */
     display: block;
+    
+    /* Mantiene el truco mágico para convertir el logo rojo original a BLANCO puro */
+    filter: brightness(0) invert(1);
 }
 
 /* ==========================================================================
@@ -232,9 +239,10 @@ body {
     z-index: 10;
 }
 
+/* Botón de Disparador de Cámara - COLOR ROJO TRANE CORPORATIVO */
 .nav-trigger {
-    background: #262626;
-    color: #fff;
+    background: #e44d26;                   /* El rojo/naranja corporativo oficial de Trane */
+    color: #ffffff;                        /* Icono de la cámara en color blanco brillante */
     width: 48px;
     height: 48px;
     border-radius: 50%;
@@ -243,13 +251,18 @@ body {
     justify-content: center;
     border: none;
     cursor: pointer;
-    box-shadow: 0 4px 12px rgba(0,0,0,0.15);
-    transition: background-color 0.2s;
+    box-shadow: 0 4px 14px rgba(228, 77, 38, 0.4); /* Sombra difuminada en tono rojo */
+    transition: background-color 0.2s, transform 0.1s ease;
+    z-index: 10;
 }
 
+/* Efecto visual instantáneo cuando el usuario hace tap con el dedo */
 .nav-trigger:active {
-    background: #404040;
+    background: #c33a17;                   /* Un tono rojo más oscuro y sólido al presionarse */
+    transform: scale(0.94);                /* Micro-ajuste de encogimiento táctil */
+    box-shadow: 0 2px 8px rgba(228, 77, 38, 0.2);
 }
+
 
 /* ==========================================================================
    6. CAPAS MODALES EMERGENTES (PUBLICAR Y COMENTARIOS)
@@ -362,13 +375,92 @@ body {
 }
 
 .btn-secondary {
-    background: #f0f2f5;
-    color: #4e4e4e;
+    /* Fondo rojo/naranja oficial de Trane con un 15% de transparencia */
+    background: rgba(228, 77, 38, 0.12); 
+    /* Texto en color rojo Trane puro y sólido para máxima legibilidad */
+    color: #e44d26;                        
+    /* Borde sutil a juego con el cristal rojo */
+    border: 1.5px solid rgba(228, 77, 38, 0.35); 
+    
+    /* Efecto de esmerilado de cristal táctil */
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+    
+    width: 100%;
+    padding: 14px 25px;
+    border-radius: 30px;                   /* Esquinas perfectamente redondeadas idénticas al Home */
+    
+    font-size: 15px;
+    font-weight: 700;                      /* Texto en negrita marcada */
+    letter-spacing: 0.5px;
+    text-transform: uppercase;             /* Forzar mayúsculas corporativas */
+    
+    cursor: pointer;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 4px 15px rgba(228, 77, 38, 0.05);
+    transition: all 0.25s cubic-bezier(0.25, 1, 0.5, 1);
 }
 
+
+/* Efecto visual interactivo al pasar el cursor (PC) o al presionarlo (Celular) */
+.btn-secondary:hover, .btn-secondary:active {
+    background: #e44d26;                   /* Se pinta del color sólido de Trane instantáneamente */
+    color: #ffffff;                        /* El texto cambia a blanco puro para un alto contraste */
+    border-color: #e44d26;
+    box-shadow: 0 6px 20px rgba(228, 77, 38, 0.3);
+    transform: scale(1.02);                /* Sutil brinco físico hacia adelante */
+}
+
+/* Micro-ajuste elástico al hacer tap con el dedo */
+.btn-secondary:active {
+    transform: scale(0.97);                /* Se contrae ligeramente al tacto del usuario */
+}
+
+/* 1. Botón "Publicar" del modal de la foto */
 .btn-primary {
-    background: #262626;
-    color: #fff;
+    background: #e44d26;                   /* Rojo Trane 100% sólido y completo */
+    color: #ffffff;                        /* Texto blanco nítido */
+    border: 2px solid #e44d26;             
+    
+    width: 100%;
+    padding: 14px 25px;
+    border-radius: 30px;                   /* Mismo redondeado impecable de toda la app */
+    
+    font-size: 15px;
+    font-weight: 700;                      /* Texto grueso */
+    letter-spacing: 0.5px;
+    text-transform: uppercase;             /* Mayúsculas corporativas */
+    
+    cursor: pointer;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 4px 15px rgba(228, 77, 38, 0.25);
+    transition: all 0.25s cubic-bezier(0.25, 1, 0.5, 1);
+}
+
+/* Efecto visual al presionar el botón de la foto (Celular o PC) */
+.btn-primary:hover, .btn-primary:active {
+    background: #c33a17;                   /* Tono rojo más oscuro al interactuar */
+    border-color: #c33a17;
+    box-shadow: 0 6px 20px rgba(228, 77, 38, 0.4);
+    transform: scale(1.02);                /* Sutil brinco hacia adelante */
+}
+
+.btn-primary:active {
+    transform: scale(0.97);                /* Se contrae ligeramente al tacto */
+}
+
+/* Estado deshabilitado mientras la foto se está subiendo a Firebase */
+.btn-primary:disabled {
+    background: #f0f2f5 !important;
+    border-color: #e1e4e8 !important;
+    color: #8e8e8e !important;
+    box-shadow: none !important;
+    cursor: not-cache;
+    transform: none !important;
 }
 
 /* ==========================================================================
@@ -437,17 +529,23 @@ body {
 }
 
 #btn-enviar-comentario {
-    background: #262626;
-    color: #fff;
+    background: #e44d26;                   /* Mismo Rojo Trane oficial completo */
+    color: #ffffff;
     border: none;
-    padding: 0 20px;
-    border-radius: 20px;
+    padding: 0 22px;
+    border-radius: 20px;                   /* Ajustado para el grosor de la barra de texto */
     font-size: 13px;
-    font-weight: 600;
+    font-weight: 700;                      /* Negrita marcada */
+    text-transform: uppercase;
     cursor: pointer;
+    box-shadow: 0 2px 8px rgba(228, 77, 38, 0.2);
+    transition: all 0.2s ease;
 }
 
-
+#btn-enviar-comentario:active {
+    background: #c33a17;
+    transform: scale(0.95);                /* Pequeña amortiguación táctil */
+}
 /* ==========================================================================
    PANTALLA COMPLETA (LIGHTBOX) CON PIE DE PÁGINA
    ========================================================================== */
@@ -536,3 +634,273 @@ body {
     transform: scale(0.95); /* Pequeño efecto visual de pulsación */
 }
 
+
+
+/* --- ESTILOS DE LA PANTALLA DE BIENVENIDA (HOME) - CON FUSIÓN DE DEGRADADOS --- */
+.home-overlay {
+    position: absolute; 
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    
+    /* Mantiene los bordes redondeados exactos del teléfono virtual */
+    border-radius: 0px; 
+    overflow: hidden; 
+    
+    /* Fondo negro mate para rellenar los espacios donde no llega el "contain" */
+    background-color: #000000; 
+    
+    /* Tu imagen oficial del evento de Trane Colombia */
+    background-image: url('bg.png');
+    background-size: contain;        
+    background-position: center;   
+    background-repeat: no-repeat;  
+    
+    z-index: 500; 
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 30px;
+    opacity: 1;
+    pointer-events: auto;
+    transition: opacity 0.5s cubic-bezier(0.25, 1, 0.5, 1), pointer-events 0.5s;
+}
+
+/* DOBLE DEGRADADO EN CAPA SUPERPUESTA PARA DIFUMINAR BORDES Y OSCURECER AL 50% */
+.home-overlay::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    
+    /* Capa triple: 
+       1. Oscurece toda la pantalla un 50% para contrastar las letras blancas.
+       2. Degradado negro puro arriba que se desvanece al 30% de la pantalla.
+       3. Degradado negro puro abajo que se desvanece desde el 70% de la pantalla. */
+    background: 
+        linear-gradient(to bottom, #000000 5%, rgba(0,0,0,0) 15%),
+        linear-gradient(to top, #000000 5%, rgba(0,0,0,0) 15%),
+        rgba(0, 0, 0, 0.50);
+        
+    z-index: 1;
+}
+
+
+
+
+
+/* Asegura que el contenido flote arriba de la capa oscura */
+/* Asegura que el contenido flote y se centre MILIMÉTRICAMENTE en el eje vertical */
+.home-content {
+    position: absolute;
+    top: 50%;           /* Empuja la caja justo a la mitad de la altura del móvil */
+    left: 0;
+    right: 0;
+    width: 100%;
+    padding: 0 30px;    
+    
+    /* REGLA MÁGICA: Compensa la altura de la propia caja para un centrado geométrico perfecto */
+    transform: translateY(-50%); 
+    
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    z-index: 2;
+}
+
+
+/* NUEVA FILA HORIZONTAL: Alínea el logo a la izquierda y el texto a la derecha */
+.trane-brand-row {
+    display: flex;
+    flex-direction: row;
+    align-items: center;    /* Centra verticalmente el logo con respecto al bloque de texto */
+    justify-content: center;
+    gap: 15px;              /* Separación exacta entre el logotipo y el texto */
+    width: 100%;
+    margin-bottom: 35px;    /* Espacio de separación con el botón de Entrar */
+}
+
+/* CONTENEDOR DE TEXTOS Y LOGO (CENTRADO MILIMÉTRICO EN LA PANTALLA) */
+.brand-text-wrapper {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start; /* Mantiene la alineación interna de las letras hacia la izquierda */
+    justify-content: center;
+    
+    width: auto;             /* CAMBIADO: Deja de ocupar el 100% para poder centrarse como un bloque */
+    margin: 0 auto;          /* REGLA MÁGICA: Centra todo el bloque entero horizontalmente en el celular */
+    padding: 0 20px;         /* Espacio de respiro sutil por si el celular es muy angosto */
+}
+
+/* LÍNEA 1: "BIENVENIDOS" */
+.trane-main-title {
+    color: #ffffff;
+    font-size: 38px;               
+    font-weight: 900;              
+    text-transform: uppercase;     
+    letter-spacing: 0.5px;         
+    line-height: 0.95;             
+    margin: 0;
+    text-shadow: 0 4px 12px rgba(0, 0, 0, 0.8); 
+    text-align: left;              /* Alineación del texto a la izquierda */
+}
+
+/* LÍNEA 2: "TRANE COLOMBIA" */
+.trane-secondary-title {
+    color: #ffffff;
+    font-size: 32px;               
+    font-weight: 900;              
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    line-height: 1.1;              
+    margin: 4px 0 0 0;             
+    text-shadow: 0 4px 12px rgba(0, 0, 0, 0.8);
+    text-align: left;              /* Alineación del texto a la izquierda */
+}
+
+/* LÍNEA 3: "30 YEARS OF LEGACY & BEYOND" */
+.trane-legacy-text {
+    color: #e44d26;                
+    font-size: 13px;               
+    font-weight: 700;              
+    text-transform: uppercase;
+    letter-spacing: 1.2px;         
+    line-height: 1.4;
+    margin: 12px 0 0 0;            
+    text-shadow: 0 2px 6px rgba(0, 0, 0, 0.9);
+    text-align: left;              /* Alineación del texto a la izquierda */
+}
+
+/* EL LOGOTIPO: Alineado perfectamente abajo al ras izquierdo de las letras */
+.home-logo {
+    width: auto;
+    height: 80px;                 
+    max-width: 180px;
+    object-fit: contain;
+    margin-top: 5px;             /* Separación exacta con el subtítulo naranja */
+    filter: drop-shadow(0px 2px 8px rgba(0, 0, 0, 0.6)); 
+    display: block;
+}
+
+
+
+/* --- ESTILOS DE LA VENTANA DE COMPARTIR QR --- */
+.qr-share-modal {
+    max-height: 60vh;
+    border-top-left-radius: 40px;
+    border-top-right-radius: 40px;
+    align-items: center;
+}
+
+.qr-code-holder {
+    background: #ffffff;
+    padding: 15px;
+    border-radius: 24px;
+    box-shadow: 0 8px 25px rgba(0,0,0,0.06);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 180px;
+    height: 180px;
+}
+
+/* Forzar que el QR generado de Google ocupe todo el recuadro */
+.qr-code-holder img {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+}
+
+
+/* BOTÓN DE ENTRAR - AJUSTADO CON MÁS MARGEN INFERIOR */
+.btn-home-start {
+    position: absolute;
+    
+    /* CAMBIADO: Subido a 55px para darle más aire y separación con el borde de abajo */
+    bottom: 55px;                          
+    
+    left: 50%;
+    transform: translateX(-50%);           /* Centrado horizontal perfecto */
+    
+    background: rgba(255, 255, 255, 0.15); 
+    color: #ffffff;                        
+    border: 2px solid rgba(255, 255, 255, 0.4); 
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    
+    width: calc(100% - 90px);              
+    max-width: 390px;                      
+    padding: 15px 35px;
+    border-radius: 30px;                   
+    
+    font-size: 16px;
+    font-weight: 700;                      
+    letter-spacing: 1px;                   
+    text-transform: uppercase;             
+    
+    cursor: pointer;
+    z-index: 510;                           
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3); 
+    transition: all 0.3s cubic-bezier(0.25, 1, 0.5, 1);
+}
+
+/* Mantener los efectos de pulsación alineados con el centrado */
+.btn-home-start:hover, .btn-home-start:active {
+    background: #ffffff;                   
+    color: #262626;                        
+    border-color: #ffffff;
+    box-shadow: 0 12px 40px rgba(255, 255, 255, 0.25);
+    transform: translateX(-50%) translateY(-2px) scale(1.02); 
+}
+
+.btn-home-start:active {
+    transform: translateX(-50%) translateY(0) scale(0.97);  
+}
+
+
+
+/* --- CONTENEDOR DEL BADGE SUPERIOR DERECHO --- */
+.home-badge-container {
+    position: absolute;
+    top: 25px;                     /* Distancia exacta desde el borde superior del marco */
+    right: 25px;                   /* Distancia exacta desde el borde derecho del marco */
+    z-index: 510;                  /* Al mismo nivel del botón para flotar sobre el degradado negro */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+/* Estilo específico para mantener la proporción de tu insignia SVG */
+.trane-badge-img {
+    width: 130px;                   /* Ancho ideal para pantallas de celulares sin que sature el diseño */
+    height: auto;                  /* Mantiene la proporción original del SVG para que no se deforme */
+    object-fit: contain;
+    filter: drop-shadow(0px 4px 10px rgba(0, 0, 0, 0.5)); /* Sombra para que destaque sobre el fondo oscuro */
+    transition: transform 0.3s ease;
+}
+
+/* Pequeña animación interactiva opcional si el usuario lo toca */
+.trane-badge-img:active {
+    transform: scale(1.05);
+}
+
+.qr-code-holder {
+    background: #ffffff;
+    padding: 15px;
+    border-radius: 24px;
+    box-shadow: 0 8px 25px rgba(0,0,0,0.06);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 200px; 
+    height: 200px;
+    margin: 0 auto; /* Centra la tarjeta horizontalmente */
+}
+
+/* Fuerza a tu imagen SVG a acoplarse al recuadro sin deformarse */
+/* Forzar al elemento SVG nativo a ocupar todo el espacio de forma fluida */
+.qr-code-holder svg {
+    width: 100%;
+    height: 100%;
+    display: block;
+}
