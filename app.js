@@ -31,12 +31,12 @@ import {
 
 // II. CONFIGURACIÓN DE TUS CREDENCIALES REALES
 const firebaseConfig = {
-  apiKey: "AIzaSyCSgIYiNPq1ZRyFZwGSiniWzbPbYALMkHY",
-  authDomain: "://firebaseapp.com",
-  projectId: "instatr-75546",
-  storageBucket: "instatr-75546.firebasestorage.app",
-  messagingSenderId: "397516947439",
-  appId: "1:397516947439:web:dbb6182669194f6adc001a"
+    apiKey: "AIzaSyCSgIYiNPq1ZRyFZwGSiniWzbPbYALMkHY",
+    authDomain: "://firebaseapp.com",
+    projectId: "instatr-75546",
+    storageBucket: "instatr-75546.firebasestorage.app",
+    messagingSenderId: "397516947439",
+    appId: "1:397516947439:web:dbb6182669194f6adc001a"
 };
 
 const app = initializeApp(firebaseConfig);
@@ -46,7 +46,7 @@ let idPublicacionActiva = null;
 let desescribirComentariosQuery = null;
 
 document.addEventListener("DOMContentLoaded", () => {
-    
+
     const feedScroll = document.querySelector(".feed-scroll");
     const botonCamara = document.getElementById("btn-camara");
     const modalPublish = document.getElementById("modal-publicar");
@@ -62,13 +62,139 @@ document.addEventListener("DOMContentLoaded", () => {
     const inputNuevoComentario = document.getElementById("input-nuevo-comentario");
     const btnEnviarComentario = document.getElementById("btn-enviar-comentario");
 
-    let imagenBase64ParaSubir = null; 
+
+    // ==========================================================================
+    // CONTROL DE NAVEGACIÓN: HOME SCREEN Y SCROLL AUTOMÁTICO
+    // ==========================================================================
+    const homeBienvenida = document.getElementById("home-bienvenida");
+    const btnEntrarApp = document.getElementById("btn-entrar-app");
+    const navHome = document.getElementById("nav-home");
+    const navScrollTop = document.getElementById("nav-scroll-top");
+
+    if (homeBienvenida && btnEntrarApp) {
+        const yaHaVisitado = localStorage.getItem("trane_visited");
+
+        if (yaHaVisitado) {
+            homeBienvenida.style.display = "none";
+            homeBienvenida.classList.add("hidden");
+        }
+
+        // Al dar clic en "Entrar" desvanecemos el Home
+        btnEntrarApp.addEventListener("click", () => {
+            localStorage.setItem("trane_visited", "true");
+            homeBienvenida.classList.add("hidden");
+            setTimeout(() => {
+                homeBienvenida.style.display = "none";
+            }, 500);
+        });
+    }
+
+    // ACCIÓN: Regresar al Home al pulsar la Casita (revelar la pantalla de bienvenida)
+    if (navHome && homeBienvenida) {
+        navHome.addEventListener("click", () => {
+            homeBienvenida.style.display = "flex";
+            // Forzar un pequeño retraso para que el navegador capte el cambio antes de animar la opacidad
+            setTimeout(() => {
+                homeBienvenida.classList.remove("hidden");
+            }, 10);
+        });
+    }
+
+    // ACCIÓN NUEVA: Hacer scroll automático suave hasta arriba del todo (último post subido)
+    if (navScrollTop && feedScroll) {
+        navScrollTop.addEventListener("click", () => {
+            feedScroll.scrollTo({
+                top: 0,
+                behavior: "smooth" // Deslizamiento fluido estilo Instagram móvil
+            });
+        });
+    }
+
+
+   const navShareQr = document.getElementById("nav-share-qr");
+    const modalShareQr = document.getElementById("modal-compartir-qr");
+    const btnCerrarShareQr = document.getElementById("btn-cerrar-share-qr");
+    const containerCanvasQr = document.getElementById("canvas-qr-compartir");
+
+    if (navShareQr && modalShareQr && containerCanvasQr) {
+        navShareQr.addEventListener("click", async () => {
+            try {
+                // 1. Validar si el SVG ya fue cargado previamente para no repetir la petición
+                if (!containerCanvasQr.querySelector("svg")) {
+                    // 2. Leer el archivo local de forma pura y asíncrona
+                    const respuesta = await fetch("qr-code.svg");
+                    if (!respuesta.ok) throw new Error("No se encontró el archivo qr-code.svg");
+                    
+                    const codigoSvgPuro = await respuesta.text();
+                    
+                    // 3. Inyectar el código XML del vector directamente en el DOM
+                    containerCanvasQr.innerHTML = codigoSvgPuro;
+                }
+                
+                // 4. Desplegar el modal hacia arriba
+                modalShareQr.classList.add("active");
+                
+            } catch (error) {
+                console.error("Error al inyectar el SVG nativo:", error);
+                containerCanvasQr.innerHTML = "<p style='font-size:12px; color:#666;'>Error al cargar el QR</p>";
+                modalShareQr.classList.add("active");
+            }
+        });
+    }
+
+    if (btnCerrarShareQr && modalShareQr) {
+        btnCerrarShareQr.addEventListener("click", () => {
+            modalShareQr.classList.remove("active");
+        });
+    }
+
+    // EL BOTÓN DE LA FLECHA: Hace scroll suave inmediato al inicio (último post en Firebase)
+    if (navScrollTop && feedScroll) {
+        navScrollTop.addEventListener("click", () => {
+            feedScroll.scrollTo({
+                top: 0,
+                behavior: "smooth" // Desplazamiento animado estilo móvil
+            });
+        });
+    }
+
+    // ==========================================================================
+    // CONTROL DE PRIMERA VISITA (HOME SCREEN AUTO-SKIP)
+    // ==========================================================================
+   
+    if (homeBienvenida && btnEntrarApp) {
+        // Verificar si la marca "trane_visited" ya existe en la memoria del celular
+        const yaHaVisitado = localStorage.getItem("trane_visited");
+
+        if (yaHaVisitado) {
+            // Si ya ha entrado antes, eliminamos el Home de inmediato sin animaciones
+            homeBienvenida.style.display = "none";
+        } else {
+            // Si es su primera vez, dejamos la pantalla visible y activamos el botón
+            btnEntrarApp.addEventListener("click", () => {
+                // Guardar la marca permanente en el navegador del dispositivo
+                localStorage.setItem("trane_visited", "true");
+
+                // Transición de desvanecimiento suave para revelar el carrusel directo
+                homeBienvenida.classList.add("hidden");
+
+                // Opcional: Remover del DOM tras terminar la animación para liberar memoria
+                setTimeout(() => {
+                    homeBienvenida.style.display = "none";
+                }, 500);
+            });
+        }
+    }
+
+
+
+    let imagenBase64ParaSubir = null;
 
     // ==========================================================================
     // 1. ESCUCHAR PUBLICACIONES EN TIEMPO REAL (VISTA DEL FEED GLOBAL)
     // ==========================================================================
     const qPosts = query(collection(db, "publicaciones"), orderBy("createdAt", "desc"));
-    
+
     onSnapshot(qPosts, (snapshot) => {
         feedScroll.innerHTML = "";
 
@@ -76,14 +202,14 @@ document.addEventListener("DOMContentLoaded", () => {
             feedScroll.innerHTML = `
                 <div style="text-align: center; color: #8e8e8e; margin-top: 50%; padding: 20px;">
                     <p style="font-size: 24px;">📸</p>
-                    <p style="font-size: 14px; font-weight: 500;">¡El muro global está vacío!</p>
-                    <p style="font-size: 12px; margin-top: 5px;">Sé el primero en escanear e inaugurar el carrusel.</p>
+                    <p style="font-size: 14px; font-weight: 500;">¡El muro está vacío!</p>
+                    <p style="font-size: 12px; margin-top: 5px;">Sé el primero en inaugurar el carrusel.</p>
                 </div>
             `;
             return;
         }
 
-                snapshot.forEach((postDoc) => {
+        snapshot.forEach((postDoc) => {
             const data = postDoc.data();
             const fechaFirebase = data.createdAt ? data.createdAt.toDate() : new Date();
             const horaMinuto = fechaFirebase.toLocaleTimeString('es-ES', {
@@ -96,7 +222,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
             const postSection = document.createElement("section");
             postSection.className = "post-card";
-            
+
             // CAMBIO AQUÍ: Ahora inyectamos una etiqueta <img> en lugar de un background-image inline
             postSection.innerHTML = `
     <div class="post-image">
@@ -130,14 +256,14 @@ document.addEventListener("DOMContentLoaded", () => {
         vincularEventosMuro();
     });
 
-        function vincularEventosMuro() {
+    function vincularEventosMuro() {
         // A. Interacción de "Me gusta" globales (Control de un solo voto por dispositivo)
         document.querySelectorAll(".btn-like").forEach(boton => {
             boton.addEventListener("click", async () => {
                 const postId = boton.getAttribute("data-id");
                 const docRef = doc(db, "publicaciones", postId);
                 const svg = boton.querySelector("svg");
-                
+
                 let dispositivoId = localStorage.getItem("trane_device_id");
                 if (!dispositivoId) {
                     dispositivoId = "dev_" + Math.random().toString(36).substring(2, 15) + Date.now();
@@ -149,16 +275,16 @@ document.addEventListener("DOMContentLoaded", () => {
 
                 if (yaVoto) {
                     boton.classList.remove("liked");
-                    svg.style.fill = "none"; 
+                    svg.style.fill = "none";
                     svg.style.stroke = "#262626";
-                    localStorage.removeItem(llaveVoto); 
-                    await updateDoc(docRef, { likesCount: increment(-1) }); 
+                    localStorage.removeItem(llaveVoto);
+                    await updateDoc(docRef, { likesCount: increment(-1) });
                 } else {
                     boton.classList.add("liked");
-                    svg.style.fill = "#FF4B4B"; 
+                    svg.style.fill = "#FF4B4B";
                     svg.style.stroke = "#FF4B4B";
-                    localStorage.setItem(llaveVoto, "true"); 
-                    await updateDoc(docRef, { likesCount: increment(1) }); 
+                    localStorage.setItem(llaveVoto, "true");
+                    await updateDoc(docRef, { likesCount: increment(1) });
                 }
             });
         });
@@ -184,10 +310,10 @@ document.addEventListener("DOMContentLoaded", () => {
                 imagen.addEventListener("click", () => {
                     // Pasar la cadena Base64 al visor grande
                     imgLightboxSrc.src = imagen.src;
-                    
+
                     // Extraer de forma exacta el pie de página de esta tarjeta y pasarlo abajo de la foto grande
                     txtLightboxCaption.innerText = captionOriginal ? captionOriginal.innerText : "";
-                    
+
                     // Activar la clase CSS para hacer visible el Lightbox con su animación suave
                     lightbox.classList.add("active");
                 });
@@ -198,7 +324,7 @@ document.addEventListener("DOMContentLoaded", () => {
     // Escuchador global fuera de la función para cerrar la pantalla completa (Lightbox) y vaciar textos
     const btnCerrarLightbox = document.getElementById("btn-cerrar-lightbox");
     const lightboxContainer = document.getElementById("lightbox-foto");
-    
+
     if (btnCerrarLightbox && lightboxContainer) {
         btnCerrarLightbox.addEventListener("click", () => {
             lightboxContainer.classList.remove("active");
@@ -207,7 +333,7 @@ document.addEventListener("DOMContentLoaded", () => {
         });
     }
 
-        // LISTAR COMENTARIOS EN TIEMPO REAL
+    // LISTAR COMENTARIOS EN TIEMPO REAL
     function abrirModalComentarios(postId) {
         listaComentarios.innerHTML = "<p style='text-align:center; font-size:12px; color:#8e8e8e;'>Cargando comentarios...</p>";
         modalComments.classList.add("active");
@@ -279,7 +405,7 @@ document.addEventListener("DOMContentLoaded", () => {
                 lector.onload = (e) => {
                     const imgElement = new Image();
                     imgElement.src = e.target.result;
-                    
+
                     imgElement.onload = () => {
                         const canvas = document.createElement("canvas");
                         const MAX_ANCHO = 800; // Ancho máximo para optimizar peso (ideal pantallas móviles)
@@ -339,7 +465,7 @@ document.addEventListener("DOMContentLoaded", () => {
             try {
                 // Registro del documento indexando los bytes como cadena String pura
                 await addDoc(collection(db, "publicaciones"), {
-                    imageData: imagenBase64ParaSubir, 
+                    imageData: imagenBase64ParaSubir,
                     caption: textoPie,
                     likesCount: 0,
                     commentsCount: 0,
