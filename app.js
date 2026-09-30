@@ -209,7 +209,7 @@ document.addEventListener("DOMContentLoaded", () => {
             return;
         }
 
-        snapshot.forEach((postDoc) => {
+               snapshot.forEach((postDoc) => {
             const data = postDoc.data();
             const fechaFirebase = data.createdAt ? data.createdAt.toDate() : new Date();
             const horaMinuto = fechaFirebase.toLocaleTimeString('es-ES', {
@@ -220,37 +220,47 @@ document.addEventListener("DOMContentLoaded", () => {
             const claseLiked = llaveVotoLocal ? "liked" : "";
             const estiloEsteticoSvg = llaveVotoLocal ? "fill: #FF4B4B; stroke: #FF4B4B;" : "fill: none; stroke: #262626;";
 
+            // DETECTOR EN TIEMPO REAL: Analizar la orientación de la foto (Base64)
+            let claseOrientacion = "es-horizontal"; // Por defecto
+            if (data.imageData) {
+                const imgAnalizadora = new Image();
+                imgAnalizadora.src = data.imageData;
+                // Si el alto es estrictamente mayor al ancho, el sistema detecta que es vertical
+                if (imgAnalizadora.height > imgAnalizadora.width) {
+                    claseOrientacion = "es-vertical";
+                }
+            }
+
             const postSection = document.createElement("section");
-            postSection.className = "post-card";
-
-            // CAMBIO AQUÍ: Ahora inyectamos una etiqueta <img> en lugar de un background-image inline
-            postSection.innerHTML = `
-    <div class="post-image">
-        <img src="${data.imageData}" alt="Post Event" class="post-main-img">
-        
-        <div class="post-content">
-            <p class="post-caption">${data.caption || ""}</p>
+            postSection.className = `post-card ${claseOrientacion}`; // Inyecta la orientación detectada en la tarjeta
             
-            <div class="interaction-bar">
-                <div class="action-group">
-                    <button class="action-btn btn-like ${claseLiked}" data-id="${postDoc.id}">
-                        <svg viewBox="0 0 24 24" style="${estiloEsteticoSvg} stroke-width: 2;"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"></path></svg>
-                        <span>${data.likesCount || 0}</span>
-                    </button>
-                    <button class="action-btn btn-comment-trigger" data-id="${postDoc.id}">
-                        <svg viewBox="0 0 24 24" style="fill: none; stroke: #262626; stroke-width: 2;"><path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"></path></svg>
-                        <span>${data.commentsCount || 0}</span>
-                    </button>
+            postSection.innerHTML = `
+                <!-- Contenedor adaptativo según orientación detectada -->
+                <div class="post-image">
+                    <img src="${data.imageData}" alt="Post Event" class="post-main-img">
+                    
+                    <div class="post-content">
+                        <p class="post-caption">${data.caption || ""}</p>
+                        
+                        <div class="interaction-bar">
+                            <div class="action-group">
+                                <button class="action-btn btn-like ${claseLiked}" data-id="${postDoc.id}">
+                                    <svg viewBox="0 0 24 24" style="${estiloEsteticoSvg} stroke-width: 2;"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"></path></svg>
+                                    <span>${data.likesCount || 0}</span>
+                                </button>
+                                <button class="action-btn btn-comment-trigger" data-id="${postDoc.id}">
+                                    <svg viewBox="0 0 24 24" style="fill: none; stroke: #262626; stroke-width: 2;"><path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"></path></svg>
+                                    <span>${data.commentsCount || 0}</span>
+                                </button>
+                            </div>
+                            <div class="post-time">${horaMinuto}</div>
+                        </div>
+                    </div>
                 </div>
-                <div class="post-time">${horaMinuto}</div>
-            </div>
-        </div>
-    </div>
-`;
-
-
+            `;
             feedScroll.appendChild(postSection);
         });
+
 
 
         vincularEventosMuro();

@@ -20,40 +20,20 @@ body {
 }
 
 /* Contenedor tipo "Mockup de Celular" (Mobile-First) */
-/* Contenedor Adaptable Inteligente - Corregido de raíz para celulares */
 .app-container {
-    width: 100%;                  /* En celulares ocupará el 100% real de la pantalla de borde a borde */
-    max-width: 100%;              /* Rompe el candado de los 480px en dispositivos móviles */
+    
+    width: 100%;
     height: 100vh;
-    height: 100dvh;               /* Evita que Edge o Safari corten el footer con la cámara */
+    height: 100dvh; 
     
-    position: relative;           /* Mantiene el imán obligatorio para los elementos absolutos */
+    /* REGLA OBLIGATORIA: Actúa como un imán para que los elementos absolutos se queden ADENTRO del móvil */
+    position: relative; 
     
-    background: #ffffff;
+    background: #fff;
     display: flex;
     flex-direction: column;
-    overflow: hidden;
+    box-shadow: 0 0 30px rgba(0,0,0,0.08);
 }
-
-/* REGLA MÁGICA: Solo si la pantalla es una computadora de escritorio (más grande que un celular)
-   volverá a encuadrarse de forma elegante en el centro como un mockup de 480px */
-@media (min-width: 481px) {
-    .app-container {
-        max-width: 480px;
-        margin: 0 auto;           /* Centra el teléfono virtual en monitores grandes */
-        height: 95vh;             /* Le da una altura estética en escritorio */
-        border-radius: 30px;      /* Bordes redondeados de simulación para PC */
-        box-shadow: 0 10px 40px rgba(0,0,0,0.12);
-        top: 50%;
-        transform: translateY(-50%); /* Centrado geométrico vertical en monitores */
-    }
-    
-    /* Ajuste para que el Home también se quede dentro del molde en PC */
-    .home-overlay {
-        border-radius: 30px !important;
-    }
-}
-
 
 /* ==========================================================================
    2. HEADER SUPERIOR (MARCA CORPORATIVA)
@@ -105,23 +85,28 @@ body {
     display: none;                
 }
 
-/* Tarjeta de Publicación - Ajustada para fluir de forma continua */
+/* Tarjeta de Publicación - Centrada perfectamente en el feed continuo */
 .post-card {
+    /* CORREGIDO: En celulares usa el 100% y en PC se congela en 480px de forma responsiva */
     width: 100%;
+    max-width: 320px;
     
-    /* Reajustado dinámicamente para que no empuje el menú inferior en Edge */
+    /* REGLA MÁGICA DE CENTRADO: Alinea todo el bloque entero en el centro del monitor */
+    margin: 0 auto; 
+    
     height: auto; 
     max-height: calc(100dvh - 60px); 
     
     scroll-snap-align: center;    
-    padding: 25px 15px;           
+    padding: 5px 15px;           
     display: flex;
     flex-direction: column;
     justify-content: center; 
     align-items: center;     
     position: relative;
-    background-color: #fff;
+    background-color: #ffffff;
 }
+
 
 
 /* El recuadro negro ahora se adapta de forma fluida al tamaño de la foto */
@@ -198,6 +183,7 @@ body {
 
 
 /* Barra de interacción ajustada horizontalmente */
+/* Barra de interacción ajustada horizontalmente con margen inferior pronunciado */
 .interaction-bar {
     background: rgba(255, 255, 255, 0.9);
     backdrop-filter: blur(15px);
@@ -210,6 +196,10 @@ body {
     box-shadow: 0 8px 32px rgba(0, 0, 0, 0.15);
     pointer-events: auto; 
     width: 100%;
+    
+    /* CAMBIADO: Añadido un margen pronunciado hacia abajo para separar 
+       las interacciones del borde inferior y garantizar el aire de respiro */
+    margin-bottom: 25px; 
 }
 
 
