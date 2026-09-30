@@ -89,7 +89,7 @@ body {
 .post-card {
     /* CORREGIDO: En celulares usa el 100% y en PC se congela en 480px de forma responsiva */
     width: 100%;
-    max-width: 320px;
+    max-width: 420px;
     
     /* REGLA MÁGICA DE CENTRADO: Alinea todo el bloque entero en el centro del monitor */
     margin: 0 auto; 
